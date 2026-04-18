@@ -788,20 +788,20 @@
     {min:5000000, max:Infinity, rate:0.35},
   ];
 
-  const SHEET_URL = 'https://script.google.com/macros/u/1/s/AKfycbxMSvfVq2v9k6fUNKPP6hiyoohvT_55EMg3ZPuGLaHS4NEkXUPjCZty-MFkbfU6lNQO/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyayYdEQM41-HqnvHSigT7vfGVX_8tzH9asHc0unuWw6mZZAk8OhL4SRxSJJcKUHVF8/exec';
 
   async function sendToSheet(data) {
-    try {
-      await fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-    } catch(err) {
-      console.log('Sheet error:', err);
-    }
+   try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+   } catch(err) {
+    console.log('Sheet error:', err);
   }
+ }
 
   function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
   function clamp(x, mn, mx) { return Math.min(Math.max(x, mn), mx); }
