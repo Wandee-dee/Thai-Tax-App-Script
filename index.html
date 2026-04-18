@@ -657,7 +657,7 @@
       รวมกันต้องไม่เกิน <strong>500,000 บาท</strong> ต่อปี
     </div>
 
-    <button class="btn-calc" style="margin-top:1rem;" onclick="calculate(); switchTabByName('result')">คำนวณภาษี ✓</button>
+    <button class="btn-calc" style="margin-top:1rem;" onclick="calculate(true); switchTabByName('result')">คำนวณภาษี ✓</button>
   </div>
 
   <!-- Tab: Result -->
@@ -819,7 +819,7 @@
     return {tax: Math.round(tax), details};
   }
 
-  function calculate() {
+  function calculate(saveData = false) {
     const salary = v('salary');
     const freelance = v('freelance');
     const interest = v('interest');
@@ -911,16 +911,18 @@
     bracketHTML += `<div class="brow total"><span class="bl">ภาษีรวม</span><span class="bv">${fmt(tax)}</span></div>`;
     document.getElementById('r-brackets').innerHTML = bracketHTML || `<div class="brow"><span class="bl" style="color:var(--text3);">เงินได้สุทธิอยู่ในเกณฑ์ยกเว้นภาษี</span></div>`;
 
-    // ส่งข้อมูลไป Google Sheets
-    sendToSheet({
-      gross, expense: totalExp, deduction: totalDeduction,
-      net, tax, withheld, balance, effRate: effRate.toFixed(2)
-    });
+    // ส่งข้อมูลไป Google Sheets เฉพาะตอนกดปุ่มคำนวณเท่านั้น
+    if (saveData) {
+      sendToSheet({
+        gross, expense: totalExp, deduction: totalDeduction,
+        net, tax, withheld, balance, effRate: effRate.toFixed(2)
+      });
+    }
   }
 
   function autoCalc() {
     const activeTab = document.querySelector('.tab-content.active');
-    if (activeTab && activeTab.id === 'tab-result') calculate();
+    if (activeTab && activeTab.id === 'tab-result') calculate(false);
   }
 
   function switchTab(name, btn) {
@@ -928,7 +930,7 @@
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     if (btn) btn.classList.add('active');
-    if (name === 'result') calculate();
+    if (name === 'result') calculate(false);
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
